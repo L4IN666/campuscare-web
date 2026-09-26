@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusCare</title>
-    
+
     <link rel="stylesheet" href="strukturcare.css">
 </head>
 
@@ -12,25 +13,36 @@
 
     <header>
         <nav>
-            <img src="img/iconv2.jpg" alt="Logo" class="logo" width="50" height="50">
-            <h1>CampusCare</h1>
+
+            <div class="brand">
+                <img src="img/iconv2.jpg" alt="Logo" class="logo" width="50" height="50">
+                <h1>CampusCare</h1>
+            </div>
 
             <ul>
                 <li><a href="#beranda">Beranda</a></li>
                 <li><a href="#laporan">Laporan</a></li>
                 <li><a href="#tentang">Tentang</a></li>
+                <li><a href="login.html" class="login-button">Login</a></li>
             </ul>
+
         </nav>
     </header>
 
+
     <main>
 
+        <!-- BERANDA -->
+
         <section id="beranda">
+
             <div class="hero-content">
+
                 <p class="subtitle">CAMPUSCARE</p>
 
                 <h2>
                     Sistem Pelaporan
+                    <br>
                     Fasilitas Kampus
                 </h2>
 
@@ -42,19 +54,196 @@
                 <a class="button" href="#laporan">
                     Buat Laporan
                 </a>
+
             </div>
+
         </section>
 
+
+        <!-- LAPORAN -->
+
         <section id="laporan">
+
             <h2>Laporan Fasilitas</h2>
 
             <p>
-                Pantau informasi laporan fasilitas kampus
-                melalui CampusCare.
+                Pilih jenis fasilitas yang mengalami
+                kerusakan atau membutuhkan perbaikan.
             </p>
+
+
+            <div class="laporan-list">
+
+                <!-- 1 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        🪑
+                    </div>
+
+                    <h3>Ruang Kelas</h3>
+
+                    <p>
+                        Laporkan kerusakan meja, kursi,
+                        papan tulis, proyektor, dan fasilitas kelas.
+                    </p>
+
+                </div>
+
+
+                <!-- 2 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        💡
+                    </div>
+
+                    <h3>Listrik</h3>
+
+                    <p>
+                        Laporkan lampu mati, stop kontak,
+                        saklar, atau masalah listrik lainnya.
+                    </p>
+
+                </div>
+
+
+                <!-- 3 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        🚿
+                    </div>
+
+                    <h3>Toilet</h3>
+
+                    <p>
+                        Laporkan keran rusak, toilet bermasalah,
+                        air tidak mengalir, atau fasilitas toilet.
+                    </p>
+
+                </div>
+
+
+                <!-- 4 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        ❄️
+                    </div>
+
+                    <h3>AC & Kipas</h3>
+
+                    <p>
+                        Laporkan AC tidak dingin, AC mati,
+                        kipas rusak, atau masalah pendingin.
+                    </p>
+
+                </div>
+
+
+                <!-- 5 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        🖥️
+                    </div>
+
+                    <h3>Komputer</h3>
+
+                    <p>
+                        Laporkan komputer tidak menyala,
+                        monitor, keyboard, mouse, dan perangkat lainnya.
+                    </p>
+
+                </div>
+
+
+                <!-- 6 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        📶
+                    </div>
+
+                    <h3>Wi-Fi</h3>
+
+                    <p>
+                        Laporkan koneksi Wi-Fi bermasalah,
+                        sinyal lemah, atau jaringan tidak tersedia.
+                    </p>
+
+                </div>
+
+
+                <!-- 7 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        🚪
+                    </div>
+
+                    <h3>Pintu & Jendela</h3>
+
+                    <p>
+                        Laporkan pintu, kunci, jendela,
+                        atau fasilitas sejenis yang mengalami kerusakan.
+                    </p>
+
+                </div>
+
+
+                <!-- 8 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        🏢
+                    </div>
+
+                    <h3>Gedung</h3>
+
+                    <p>
+                        Laporkan kerusakan lantai, dinding,
+                        plafon, atau bagian bangunan kampus.
+                    </p>
+
+                </div>
+
+
+                <!-- 9 -->
+
+                <div class="laporan-card">
+
+                    <div class="laporan-icon">
+                        🗑️
+                    </div>
+
+                    <h3>Kebersihan</h3>
+
+                    <p>
+                        Laporkan ruangan kotor, tempat sampah penuh,
+                        atau fasilitas kebersihan yang bermasalah.
+                    </p>
+
+                </div>
+
+            </div>
+
         </section>
 
+
+        <!-- TENTANG -->
+
         <section id="tentang">
+
             <h2>Tentang CampusCare</h2>
 
             <p>
@@ -63,14 +252,20 @@
                 menyampaikan masalah fasilitas kepada pihak
                 yang bertanggung jawab.
             </p>
-        </section>
 
+        </section>
 
     </main>
 
+
     <footer>
-        <p>&copy; 2026 CampusCare</p>
+
+        <p>
+            &copy; 2026 CampusCare
+        </p>
+
     </footer>
 
 </body>
+
 </html>

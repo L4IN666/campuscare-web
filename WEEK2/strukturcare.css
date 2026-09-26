@@ -18,7 +18,6 @@ body {
     color: #1f2937;
     background-color: #f8fafc;
 
-    /* Mencegah horizontal overflow */
     overflow-x: hidden;
 }
 
@@ -36,21 +35,37 @@ nav {
     width: 100%;
     max-width: 1100px;
     margin: auto;
-    padding: 20px;
+    padding: 15px 20px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-nav h1 {
+
+/* LOGO DAN NAMA */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand h1 {
     font-size: 24px;
     color: #2563eb;
-
 }
+
+.logo {
+    border-radius: 8px;
+}
+
+
+/* MENU */
 
 nav ul {
     display: flex;
+    align-items: center;
     gap: 25px;
 
     list-style: none;
@@ -64,6 +79,23 @@ nav a {
 
 nav a:hover {
     color: #2563eb;
+}
+
+
+/* LOGIN (nanti) */ 
+
+.login-button {
+    padding: 8px 16px;
+
+    background-color: #2563eb;
+    color: #ffffff;
+
+    border-radius: 6px;
+}
+
+nav a.login-button:hover {
+    background-color: #1d4ed8;
+    color: #ffffff;
 }
 
 
@@ -164,6 +196,61 @@ section p {
 
 
 /* =========================
+   LAPORAN
+========================= */
+
+.laporan-list {
+    margin-top: 30px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.laporan-card {
+    padding: 20px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.laporan-card:hover {
+    border-color: #2563eb;
+}
+
+.laporan-icon {
+    width: 45px;
+    height: 45px;
+
+    margin-bottom: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #eff6ff;
+
+    border-radius: 8px;
+
+    font-size: 22px;
+}
+
+.laporan-card h3 {
+    margin-bottom: 10px;
+
+    font-size: 20px;
+}
+
+.laporan-card p {
+    color: #64748b;
+}
+
+
+/* =========================
    FOOTER
 ========================= */
 
@@ -178,7 +265,7 @@ footer {
 
 
 /* =========================
-   RESPONSIVE
+   TABLET
 ========================= */
 
 @media (max-width: 768px) {
@@ -190,6 +277,7 @@ footer {
 
     nav ul {
         gap: 15px;
+
         justify-content: center;
         flex-wrap: wrap;
     }
@@ -214,11 +302,19 @@ footer {
     section h2 {
         font-size: 28px;
     }
+
+
+    /* LAPORAN */
+
+    .laporan-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
 }
 
 
 /* =========================
-   SMALL MOBILE
+   MOBILE
 ========================= */
 
 @media (max-width: 480px) {
@@ -227,7 +323,7 @@ footer {
         padding: 15px;
     }
 
-    nav h1 {
+    .brand h1 {
         font-size: 22px;
     }
 
@@ -247,4 +343,12 @@ footer {
     section:not(#beranda) {
         padding: 50px 20px;
     }
+
+
+    /* LAPORAN */
+
+    .laporan-list {
+        grid-template-columns: 1fr;
+    }
+
 }
