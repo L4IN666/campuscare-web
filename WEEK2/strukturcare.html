@@ -4,64 +4,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusCare</title>
+
+    <title>CampusCare</title>   
+    <script src="./campuscare.js"></script>
+    <!-- CSS CampusCare -->
     <link rel="stylesheet" href="strukturcare.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" >
 </head>
 
 <body>
 
+    <!-- =========================
+         HEADER
+    ========================== -->
+
     <header>
         <nav>
 
+            <!-- BRAND -->
             <div class="brand">
-                <img src="img/iconv2.jpg" alt="Logo" class="logo" width="50" height="50">
+
+                <img
+                    src="img/iconv2.jpg"
+                    alt="Logo CampusCare"
+                    class="logo"
+                    width="50"
+                    height="50"
+                >
+
                 <h1>CampusCare</h1>
+
             </div>
 
+
+            <!-- MENU -->
             <ul>
-                <li><a href="#beranda">Beranda</a></li>
-                <li><a href="#laporan">Laporan</a></li>
-                <li><a href="#tentang">Tentang</a></li>
-                <li><a href="login.html" class="login-button">Login</a></li>
+
+                <li>
+                    <a href="#beranda">Beranda</a>
+                </li>
+
+                <li>
+                    <a href="#laporan">Laporan</a>
+                </li>
+
+                <li>
+                    <a href="#tentang">Tentang</a>
+                </li>
+
+                <li>
+                    <a href="login.html" class="login-button">
+                        Login
+                    </a>
+                </li>
+
             </ul>
 
         </nav>
     </header>
 
 
+    <!-- =========================
+         MAIN
+    ========================== -->
+
     <main>
 
-        <!-- BERANDA -->
+        <!-- =========================
+             BERANDA
+        ========================== -->
 
         <section id="beranda">
 
             <div class="hero-content">
 
-                <p class="subtitle">CAMPUSCARE</p>
+                <p class="subtitle">
+                    CAMPUSCARE
+                </p>
 
-                <h2>
+
+                <!--
+                    TASK 01
+                    SELECT & CHANGE
+
+                    Elemen ini akan dipilih
+                    menggunakan JavaScript.
+                -->
+
+                <h2 id="judul-beranda">
                     Sistem Pelaporan
                     <br>
                     Fasilitas Kampus
                 </h2>
 
-                <script>
-                    const title = document.querySelector("h2");
-                    title.textContent = "Campus Care"
-                </script>
-
-            
 
                 <p>
                     Laporkan fasilitas kampus yang rusak
                     atau membutuhkan perbaikan dengan mudah.
                 </p>
 
-               
-             
 
-                <a href="#laporan"
-                class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600"
+                <!--
+                    TASK 02
+                    HANDLE USER EVENT
+
+                    Tombol memiliki ID agar
+                    dapat dipilih JavaScript.
+                -->
+
+                <a
+                    href="#laporan"
+                    id="btn-buat-laporan"
+                    class="button-laporan"
                 >
                     Buat Laporan
                 </a>
@@ -71,11 +126,15 @@
         </section>
 
 
-        <!-- LAPORAN -->
+        <!-- =========================
+             LAPORAN
+        ========================== -->
 
         <section id="laporan">
 
-            <h2>Laporan Fasilitas</h2>
+            <h2>
+                Laporan Fasilitas
+            </h2>
 
             <p>
                 Pilih jenis fasilitas yang mengalami
@@ -85,7 +144,9 @@
 
             <div class="laporan-list">
 
-                <!-- 1 -->
+                <!-- =========================
+                     1. RUANG KELAS
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -93,7 +154,9 @@
                         🪑
                     </div>
 
-                    <h3>Ruang Kelas</h3>
+                    <h3>
+                        Ruang Kelas
+                    </h3>
 
                     <p>
                         Laporkan kerusakan meja, kursi,
@@ -103,7 +166,9 @@
                 </div>
 
 
-                <!-- 2 -->
+                <!-- =========================
+                     2. LISTRIK
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -111,7 +176,9 @@
                         💡
                     </div>
 
-                    <h3>Listrik</h3>
+                    <h3>
+                        Listrik
+                    </h3>
 
                     <p>
                         Laporkan lampu mati, stop kontak,
@@ -121,7 +188,9 @@
                 </div>
 
 
-                <!-- 3 -->
+                <!-- =========================
+                     3. TOILET
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -129,7 +198,9 @@
                         🚿
                     </div>
 
-                    <h3>Toilet</h3>
+                    <h3>
+                        Toilet
+                    </h3>
 
                     <p>
                         Laporkan keran rusak, toilet bermasalah,
@@ -139,7 +210,9 @@
                 </div>
 
 
-                <!-- 4 -->
+                <!-- =========================
+                     4. AC & KIPAS
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -147,7 +220,9 @@
                         ❄️
                     </div>
 
-                    <h3>AC & Kipas</h3>
+                    <h3>
+                        AC &amp; Kipas
+                    </h3>
 
                     <p>
                         Laporkan AC tidak dingin, AC mati,
@@ -157,7 +232,9 @@
                 </div>
 
 
-                <!-- 5 -->
+                <!-- =========================
+                     5. KOMPUTER
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -165,7 +242,9 @@
                         🖥️
                     </div>
 
-                    <h3>Komputer</h3>
+                    <h3>
+                        Komputer
+                    </h3>
 
                     <p>
                         Laporkan komputer tidak menyala,
@@ -175,7 +254,9 @@
                 </div>
 
 
-                <!-- 6 -->
+                <!-- =========================
+                     6. WI-FI
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -183,19 +264,21 @@
                         📶
                     </div>
 
-                    <h3>Wi-Fi</h3>
+                    <h3>
+                        Wi-Fi
+                    </h3>
 
                     <p>
                         Laporkan koneksi Wi-Fi bermasalah,
                         sinyal lemah, atau jaringan tidak tersedia.
-
-
                     </p>
 
                 </div>
 
 
-                <!-- 7 -->
+                <!-- =========================
+                     7. PINTU & JENDELA
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -203,7 +286,9 @@
                         🚪
                     </div>
 
-                    <h3>Pintu & Jendela</h3>
+                    <h3>
+                        Pintu &amp; Jendela
+                    </h3>
 
                     <p>
                         Laporkan pintu, kunci, jendela,
@@ -213,7 +298,9 @@
                 </div>
 
 
-                <!-- 8 -->
+                <!-- =========================
+                     8. GEDUNG
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -221,7 +308,9 @@
                         🏢
                     </div>
 
-                    <h3>Gedung</h3>
+                    <h3>
+                        Gedung
+                    </h3>
 
                     <p>
                         Laporkan kerusakan lantai, dinding,
@@ -231,7 +320,9 @@
                 </div>
 
 
-                <!-- 9 -->
+                <!-- =========================
+                     9. KEBERSIHAN
+                ========================== -->
 
                 <div class="laporan-card">
 
@@ -239,7 +330,9 @@
                         🗑️
                     </div>
 
-                    <h3>Kebersihan</h3>
+                    <h3>
+                        Kebersihan
+                    </h3>
 
                     <p>
                         Laporkan ruangan kotor, tempat sampah penuh,
@@ -253,11 +346,15 @@
         </section>
 
 
-        <!-- TENTANG -->
+        <!-- =========================
+             TENTANG
+        ========================== -->
 
         <section id="tentang">
 
-            <h2>Tentang CampusCare</h2>
+            <h2>
+                Tentang CampusCare
+            </h2>
 
             <p>
                 CampusCare merupakan sistem pelaporan
@@ -271,6 +368,10 @@
     </main>
 
 
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
     <footer>
 
         <p>
@@ -279,6 +380,13 @@
 
     </footer>
 
+
+    <!-- =========================
+         JAVASCRIPT WEEK 3
+    ========================== -->
+
+    
+    
 </body>
 
 </html>
