@@ -155,7 +155,7 @@ main {
    BUTTON
 ========================= */
 
-.button {
+/*.button {
     display: inline-block;
 
     padding: 12px 22px;
@@ -167,7 +167,7 @@ main {
 
     text-decoration: none;
     font-weight: 600;
-}
+}*/
 
 .button:hover {
     background-color: #1d4ed8;

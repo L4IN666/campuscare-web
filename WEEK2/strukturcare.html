@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusCare</title>
-
     <link rel="stylesheet" href="strukturcare.css">
 </head>
 
@@ -46,12 +45,24 @@
                     Fasilitas Kampus
                 </h2>
 
+                <script>
+                    const title = document.querySelector("h2");
+                    title.textContent = "Campus Care"
+                </script>
+
+            
+
                 <p>
                     Laporkan fasilitas kampus yang rusak
                     atau membutuhkan perbaikan dengan mudah.
                 </p>
 
-                <a class="button" href="#laporan">
+               
+             
+
+                <a href="#laporan"
+                class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600"
+                >
                     Buat Laporan
                 </a>
 
@@ -177,6 +188,8 @@
                     <p>
                         Laporkan koneksi Wi-Fi bermasalah,
                         sinyal lemah, atau jaringan tidak tersedia.
+
+
                     </p>
 
                 </div>
