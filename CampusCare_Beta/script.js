@@ -405,7 +405,10 @@ let activeFilter = 'Semua';
 let lastFocus = null;
 
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const allReports = () => [...getReports(), ...mockReports];
+const allReports = () => {
+    const ov = getStatusOverrides();
+    return [...getReports(), ...mockReports].map(r => ({ ...r, status: ov[r.id] || r.status }));
+};
 
 function renderReports() {
     const q = searchInput ? searchInput.value.toLowerCase() : '';
@@ -415,7 +418,7 @@ function renderReports() {
     reportList.innerHTML = rows.length
         ? rows.map(r => `<article class="report-item"><i class="dot ${r.status}"></i>
             <div><h4>${esc(r.title)}</h4><p>${esc(r.category)} · ${esc(r.location)}</p></div>
-            <span class="status ${r.status}">${r.status}</span></article>`).join('')
+            ${statusControl(r)}</article>`).join('')
         : '<p class="empty">Belum ada laporan dengan filter ini. Coba status lain atau buat laporan baru.</p>';
 }
 
@@ -439,6 +442,7 @@ function renderCharts() {
 }
 
 function openReportModal(category) {
+    if (!requireStudent()) return;
     lastFocus = document.activeElement;
     const sel = reportForm.elements.category;
     if (category && [...sel.options].some(o => o.value === category)) sel.value = category;
@@ -503,3 +507,141 @@ window.CampusCare = {
     validateForm,
     showNotification
 };
+
+
+// =========================
+// LOGIN MAHASISWA & ADMIN (demo, tanpa server)
+// =========================
+// Catatan: akun ada di file ini hanya untuk demo tugas. Aplikasi sungguhan
+// wajib memverifikasi login di server (kata sandi tidak boleh ada di JavaScript).
+
+const USERS = [
+    { username: '2024001', password: 'mahasiswa123', role: 'mahasiswa', name: 'Mahasiswa Demo' },
+    { username: 'admin', password: 'admin123', role: 'admin', name: 'Admin Sarpras' }
+];
+const ROLE_INFO = {
+    mahasiswa: { label: 'NIM', hint: 'Akun demo: NIM 2024001, kata sandi mahasiswa123' },
+    admin: { label: 'Username', hint: 'Akun demo: username admin, kata sandi admin123' }
+};
+
+var currentUser = null; // var: dipakai renderReports() yang berjalan lebih awal
+try { currentUser = JSON.parse(localStorage.getItem('campuscare_session')); } catch (e) { currentUser = null; }
+let loginRole = 'mahasiswa';
+
+const loginModal = document.getElementById('loginModal');
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+
+function isAdmin() { return !!currentUser && currentUser.role === 'admin'; }
+
+function getStatusOverrides() {
+    try { return JSON.parse(localStorage.getItem('campuscare_status')) || {}; } catch (e) { return {}; }
+}
+
+function statusControl(r) {
+    if (!isAdmin()) return `<span class="status ${r.status}">${r.status}</span>`;
+    const opts = STATUS.map(s => `<option${s === r.status ? ' selected' : ''}>${s}</option>`).join('');
+    return `<select data-id="${r.id}" aria-label="Ubah status laporan" class="rounded-full border border-solid border-[#e0e0e0] bg-white px-3 py-1 text-xs font-semibold text-ink outline-none focus:border-brand">${opts}</select>`;
+}
+
+function setLoginRole(role) {
+    loginRole = role;
+    document.querySelectorAll('.role-tab').forEach(t => {
+        const on = t.dataset.role === role;
+        t.classList.toggle('bg-white', on);
+        t.classList.toggle('text-brand', on);
+        t.classList.toggle('shadow-sm', on);
+        t.classList.toggle('text-[#5b6b86]', !on);
+    });
+    document.getElementById('idLabel').textContent = ROLE_INFO[role].label;
+    document.getElementById('loginHint').textContent = ROLE_INFO[role].hint;
+    loginError.classList.add('hidden');
+}
+
+function openLogin() {
+    setLoginRole(loginRole);
+    loginModal.classList.replace('hidden', 'flex');
+    loginModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => loginForm.elements.username.focus(), 50);
+}
+
+function closeLogin() {
+    loginModal.classList.replace('flex', 'hidden');
+    loginModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function updateAuthUI() {
+    const on = !!currentUser;
+    const chip = document.getElementById('userChip');
+    document.getElementById('loginBtn').classList.toggle('hidden', on);
+    chip.classList.toggle('hidden', !on);
+    chip.classList.toggle('flex', on);
+    if (on) {
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('userRole').textContent = isAdmin() ? 'Admin' : 'Mahasiswa';
+    }
+    if (reportList) { renderReports(); renderCharts(); }
+}
+
+function requireStudent() {
+    if (!currentUser) {
+        showNotification('Masuk sebagai mahasiswa dulu untuk membuat laporan.');
+        openLogin();
+        return false;
+    }
+    if (isAdmin()) {
+        showNotification('Admin mengubah status laporan lewat daftar laporan.');
+        return false;
+    }
+    return true;
+}
+
+if (loginModal) {
+    document.getElementById('loginBtn').addEventListener('click', openLogin);
+    document.getElementById('loginClose').addEventListener('click', closeLogin);
+    loginModal.addEventListener('click', e => { if (e.target === loginModal) closeLogin(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !loginModal.classList.contains('hidden')) closeLogin();
+    });
+    document.querySelectorAll('.role-tab').forEach(t => t.addEventListener('click', () => setLoginRole(t.dataset.role)));
+
+    loginForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const { username = '', password = '' } = Object.fromEntries(new FormData(loginForm));
+        const user = USERS.find(u => u.role === loginRole && u.username === username.trim() && u.password === password);
+        if (!user) {
+            loginError.textContent = 'Akun atau kata sandi salah. Periksa lagi, lalu coba masuk.';
+            loginError.classList.remove('hidden');
+            return;
+        }
+        currentUser = { username: user.username, name: user.name, role: user.role };
+        localStorage.setItem('campuscare_session', JSON.stringify(currentUser));
+        loginForm.reset();
+        closeLogin();
+        updateAuthUI();
+        showNotification('Masuk sebagai ' + user.name);
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        currentUser = null;
+        localStorage.removeItem('campuscare_session');
+        updateAuthUI();
+        showNotification('Kamu sudah keluar.');
+    });
+
+    // Admin: ubah status laporan
+    reportList?.addEventListener('change', e => {
+        const sel = e.target.closest('select[data-id]');
+        if (!sel || !isAdmin()) return;
+        const map = getStatusOverrides();
+        map[sel.dataset.id] = sel.value;
+        localStorage.setItem('campuscare_status', JSON.stringify(map));
+        renderReports();
+        renderCharts();
+        showNotification('Status laporan diperbarui.');
+    });
+
+    updateAuthUI();
+}
