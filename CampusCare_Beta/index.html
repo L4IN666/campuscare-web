@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusCare - Sistem Pelaporan Fasilitas Kampus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="progress-bar"></div>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <nav class="nav-container">
+            <div class="brand">
+                <div class="brand-icon">🏫</div>
+                <h1>CampusCare</h1>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="#beranda" class="nav-link">Beranda</a></li>
+                <li><a href="#laporan" class="nav-link">Laporan</a></li>
+                <li><a href="#cara-kerja" class="nav-link">Cara Kerja</a></li>
+                <li><a href="#tentang" class="nav-link">Tentang</a></li>
+            </ul>
+
+            <button class="btn-primary">Buat Laporan</button>
+
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+        <!-- HERO SECTION -->
+        <section id="beranda" class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">✓</span>
+                    <span class="badge-text">Lapor Fasilitas Kampus</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Laporkan Fasilitas Kampus yang Rusak dengan Mudah
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Platform terpercaya untuk melaporkan kerusakan fasilitas kampus. Respons cepat dan solusi efektif untuk kenyamanan belajar Anda.
+                </p>
+
+                <button class="btn-hero">
+                    <span>🚀 Mulai Laporan</span>
+                </button>
+            </div>
+
+            <div class="hero-image">
+                <div class="chip-float c1"><i class="dot Selesai"></i><div><b>Lampu koridor Gedung A</b><small>Selesai · 2 jam lalu</small></div></div>
+                <div class="chip-float c2"><i class="dot Diproses"></i><div><b>AC Ruang 301</b><small>Sedang ditangani teknisi</small></div></div>
+                <div class="image-placeholder">
+                    <div class="placeholder-content">
+                        <div class="icon-large">🏢</div>
+                        <p>Kampus yang Nyaman</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEARCH & FILTER SECTION -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Cari kategori fasilitas...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">Semua</button>
+                    <button class="filter-btn">Menunggu</button>
+                    <button class="filter-btn">Diproses</button>
+                    <button class="filter-btn">Selesai</button>
+                </div>
+                <div id="reportList" class="report-list" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!-- WELCOME SECTION -->
+        <section class="welcome-section">
+            <div class="welcome-container">
+                <div class="welcome-image">
+                    <div class="image-box">
+                        <div class="image-placeholder-small">
+                            <div class="icon-medium">💼</div>
+                        </div>
+                    </div>
+                    <div class="welcome-badge-icon">
+                        <span class="icon-badge">🌱</span>
+                    </div>
+                </div>
+
+                <div class="welcome-content">
+                    <h2>Mengapa Memilih CampusCare?</h2>
+                    <p>
+                        CampusCare adalah platform modern yang dirancang khusus untuk memudahkan mahasiswa melaporkan masalah fasilitas kampus. Dengan sistem yang transparan dan responsif, kami memastikan setiap laporan ditangani dengan cepat dan profesional.
+                    </p>
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">⚡</span>
+                            <span>Lapor dalam sekali klik</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📊</span>
+                            <span>Pantau status real-time</span>
+                        </div>
+                    </div>
+                    <button class="btn-secondary">Pelajari Lebih Lanjut</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIES SECTION -->
+        <section id="laporan" class="categories-section">
+            <div class="section-header">
+                <h2>Kategori Fasilitas Kampus</h2>
+                <p>Pilih kategori fasilitas yang mengalami kerusakan atau membutuhkan perbaikan</p>
+            </div>
+
+            <div class="categories-container">
+                <!-- Category 1 -->
+                <div class="category-card">
+                    <div class="card-icon">🪑</div>
+                    <h3>Ruang Kelas</h3>
+                    <p>Laporkan kerusakan meja, kursi, papan tulis, proyektor, dan fasilitas kelas lainnya.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="category-card">
+                    <div class="card-icon">💡</div>
+                    <h3>Listrik & Penerangan</h3>
+                    <p>Laporkan lampu mati, stop kontak rusak, saklar bermasalah, atau gangguan listrik lainnya.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="category-card">
+                    <div class="card-icon">🚿</div>
+                    <h3>Fasilitas Air</h3>
+                    <p>Laporkan keran rusak, toilet bermasalah, air tidak mengalir, atau fasilitas air lainnya.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="category-card">
+                    <div class="card-icon">❄️</div>
+                    <h3>AC & Pendingin</h3>
+                    <p>Laporkan AC tidak dingin, AC mati, kipas rusak, atau masalah pendinginan lainnya.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 5 -->
+                <div class="category-card">
+                    <div class="card-icon">🖥️</div>
+                    <h3>Peralatan IT</h3>
+                    <p>Laporkan komputer tidak menyala, monitor, keyboard, mouse, atau perangkat IT lainnya.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 6 -->
+                <div class="category-card">
+                    <div class="card-icon">📶</div>
+                    <h3>Jaringan Wi-Fi</h3>
+                    <p>Laporkan koneksi Wi-Fi bermasalah, sinyal lemah, atau jaringan yang tidak tersedia.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 7 -->
+                <div class="category-card">
+                    <div class="card-icon">🚪</div>
+                    <h3>Pintu & Jendela</h3>
+                    <p>Laporkan pintu, kunci, jendela, atau fasilitas sejenis yang mengalami kerusakan.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 8 -->
+                <div class="category-card">
+                    <div class="card-icon">🏢</div>
+                    <h3>Struktur Bangunan</h3>
+                    <p>Laporkan kerusakan lantai, dinding, plafon, atau bagian bangunan kampus lainnya.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+
+                <!-- Category 9 -->
+                <div class="category-card">
+                    <div class="card-icon">🗑️</div>
+                    <h3>Kebersihan</h3>
+                    <p>Laporkan ruangan kotor, tempat sampah penuh, atau fasilitas kebersihan yang bermasalah.</p>
+                    <button class="btn-card">Lapor Sekarang</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS SECTION -->
+        <section id="cara-kerja" class="how-it-works">
+            <div class="section-header">
+                <h2>Bagaimana Cara Kerjanya?</h2>
+                <p>Tiga langkah mudah untuk melaporkan fasilitas kampus yang bermasalah</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Pilih Kategori</h3>
+                    <p>Pilih kategori fasilitas yang bermasalah dari daftar yang tersedia.</p>
+                    <div class="step-icon">📋</div>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Isi Detail</h3>
+                    <p>Berikan deskripsi detail tentang masalah dan lokasi fasilitas yang rusak.</p>
+                    <div class="step-icon">✍️</div>
+                </div>
+
+                <div class="step-arrow">→</div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Pantau Status</h3>
+                    <p>Pantau progress perbaikan fasilitas Anda secara real-time.</p>
+                    <div class="step-icon">📊</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS SECTION -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number">2.5K+</div>
+                    <div class="stat-label">Laporan Terselesaikan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1.2K+</div>
+                    <div class="stat-label">Pengguna Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Kepuasan Pengguna</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Dukungan Tersedia</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD SECTION -->
+        <section id="ringkasan" class="dashboard-section">
+            <div class="section-header">
+                <h2>Ringkasan Laporan Bulan Ini</h2>
+                <p>Data contoh yang ikut bertambah setiap kali kamu mengirim laporan.</p>
+            </div>
+            <div class="dashboard-grid">
+                <div class="chart-card">
+                    <h3>Status laporan</h3>
+                    <div class="donut-wrap">
+                        <svg id="donut" viewBox="0 0 42 42" role="img" aria-label="Grafik donat status laporan"></svg>
+                        <ul id="donutLegend" class="legend"></ul>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Paling sering dilaporkan</h3>
+                    <div id="bars" class="bars"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIAL SECTION -->
+        <section class="testi-section">
+            <div class="section-header">
+                <h2>Kata Mereka yang Sudah Melapor</h2>
+                <p>Cerita singkat dari mahasiswa dan staf kampus.</p>
+            </div>
+            <div class="testi-grid">
+                <figure class="testi-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>Lampu koridor lantai 2 mati seminggu. Setelah lapor lewat CampusCare, besoknya sudah diganti.</blockquote>
+                    <figcaption class="who"><span class="avatar">N</span><div><b>Nadia Putri</b><small>Mahasiswa Psikologi</small></div></figcaption>
+                </figure>
+                <figure class="testi-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>Statusnya jelas: menunggu, diproses, selesai. Kami tidak perlu lagi bolak-balik ke bagian sarana.</blockquote>
+                    <figcaption class="who"><span class="avatar">R</span><div><b>Rizky Ramadhan</b><small>Ketua HMJ Informatika</small></div></figcaption>
+                </figure>
+                <figure class="testi-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>Laporan masuk rapi dengan lokasi lengkap, jadi teknisi langsung tahu harus ke mana.</blockquote>
+                    <figcaption class="who"><span class="avatar">S</span><div><b>Sari Wulandari</b><small>Staf Sarana &amp; Prasarana</small></div></figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="tentang" class="about-section">
+            <div class="section-header">
+                <h2>Tentang CampusCare</h2>
+                <p>Visi kami adalah menciptakan kampus yang lebih nyaman untuk semua</p>
+            </div>
+
+            <div class="about-content">
+                <p>
+                    CampusCare adalah inisiatif dari Universitas Muhammadiyah Malang untuk meningkatkan kualitas hidup akademik melalui sistem pelaporan fasilitas yang transparan dan responsif. Kami percaya bahwa setiap mahasiswa berhak mendapatkan lingkungan belajar yang optimal.
+                </p>
+                <p>
+                    Platform ini dirancang dengan mempertimbangkan kebutuhan mahasiswa modern, dengan antarmuka yang intuitif dan fitur-fitur yang powerful untuk memastikan setiap laporan ditangani dengan serius dan cepat.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>Siap Membuat Kampus Lebih Baik?</h2>
+                <p>Laporkan sekarang dan bantu kami menjaga fasilitas kampus tetap dalam kondisi optimal</p>
+                <button class="btn-cta">Buat Laporan Pertama Anda</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>CampusCare</h4>
+                <p>Platform pelaporan fasilitas kampus yang modern dan responsif.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Menu</h4>
+                <ul>
+                    <li><a href="#beranda">Beranda</a></li>
+                    <li><a href="#laporan">Laporan</a></li>
+                    <li><a href="#cara-kerja">Cara Kerja</a></li>
+                    <li><a href="#tentang">Tentang</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Kontak</h4>
+                <ul>
+                    <li>Email: info@campuscare.id</li>
+                    <li>Phone: (0341) 464-2002</li>
+                    <li>Alamat: Universitas Muhammadiyah Malang</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Media Sosial</h4>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 CampusCare. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <!-- REPORT MODAL -->
+    <div class="modal" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-card">
+            <button type="button" class="modal-close" aria-label="Tutup">×</button>
+            <h2 id="modalTitle">Buat laporan baru</h2>
+            <p class="modal-sub">Ceritakan kerusakannya, kami teruskan ke tim sarana dan prasarana.</p>
+            <form id="reportForm" novalidate>
+                <label class="field sel"><select name="category"></select><span>Kategori</span></label>
+                <label class="field"><input name="title" placeholder=" " maxlength="80"><span>Judul laporan</span></label>
+                <label class="field"><input name="location" placeholder=" " maxlength="80"><span>Lokasi (gedung, lantai, ruang)</span></label>
+                <label class="field"><textarea name="description" rows="4" placeholder=" " maxlength="400"></textarea><span>Deskripsi masalah</span></label>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary modal-cancel">Batal</button>
+                    <button type="submit" class="btn-primary">Kirim laporan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
