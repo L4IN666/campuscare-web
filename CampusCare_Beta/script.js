@@ -226,11 +226,22 @@ const spy = new IntersectionObserver((entries) => {
 }, { rootMargin: '-45% 0px -50% 0px' });
 document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
 
-window.addEventListener('scroll', () => {
+/*window.addEventListener('scroll', () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     navbar?.classList.toggle('scrolled', window.scrollY > 40);
     if (progressBar) progressBar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
-}, { passive: true });
+}, { passive: true });*/
+
+const BUBBLE_OFFSET = 80; // jarak scroll (px) sebelum bubble muncul
+
+function onScroll() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    navbar?.classList.toggle('scrolled', window.scrollY > BUBBLE_OFFSET);
+    if (progressBar) progressBar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll(); // cek posisi awal
 
 // =========================
 // FORM VALIDATION (Future use)
@@ -642,6 +653,58 @@ if (loginModal) {
         renderCharts();
         showNotification('Status laporan diperbarui.');
     });
+
+    // =========================
+// WHY SHOWCASE (Mengapa Memilih CampusCare)
+// =========================
+(function () {
+    const root = document.querySelector('[data-why]');
+    if (!root) return;
+
+    const cards  = [...root.querySelectorAll('[data-why-card]')];
+    const slides = [...root.querySelectorAll('[data-why-slide]')];
+    const dots   = [...root.querySelectorAll('[data-why-dot]')];
+
+    const DELAY = 5500; // jeda ganti otomatis (ms)
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0, timer = null, locked = false;
+
+    function show(n) {
+        index = n;
+        cards.forEach((c, k) => {
+            c.dataset.active = k === n;
+            c.querySelector('button').setAttribute('aria-expanded', k === n);
+        });
+        slides.forEach((s, k) => {
+            s.dataset.active = k === n;
+            s.setAttribute('aria-hidden', k !== n);
+        });
+        dots.forEach((d, k) => { d.dataset.active = k === n; });
+    }
+
+    function stop() { clearInterval(timer); timer = null; }
+    function start() {
+        if (reduce || locked || timer) return;
+        timer = setInterval(() => show((index + 1) % cards.length), DELAY);
+    }
+
+    // klik manual = berhenti autoplay
+    function pick(k) { locked = true; stop(); show(k); }
+    cards.forEach((c, k) => c.querySelector('button').addEventListener('click', () => pick(k)));
+    dots.forEach((d, k) => d.addEventListener('click', () => pick(k)));
+
+    // jeda saat hover / fokus
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    // hanya jalan saat terlihat di layar
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()), { threshold: 0.3 }).observe(root);
+
+    show(0);
+})();
+    
 
     updateAuthUI();
 }
