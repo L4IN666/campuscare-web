@@ -2086,5 +2086,92 @@ html { scroll-padding-top: 96px; }
     .navbar.scrolled .nav-container { animation: none; }
 }
 
+/* MOBILE FIXES */
+
+@media (max-width: 768px) {
+
+    /* Dashboard: 1 card per baris */
+    .dashboard-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+    }
+
+    /* Testimonial: 1 card per baris */
+    .testi-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+    }
+
+    /* Card dashboard */
+    .chart-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+        padding: 24px !important;
+    }
+
+    /* Grafik status */
+    .donut-wrap {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    #donut {
+        width: 160px;
+        height: 160px;
+    }
+
+    .legend {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* Daftar kategori */
+    .bars {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .bar {
+        grid-template-columns: 1fr !important;
+        gap: 6px;
+    }
+
+    .bar span {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+    }
+
+    .bar i {
+        width: var(--w);
+        max-width: 100%;
+    }
+
+    /* Testimonial card */
+    .testi-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+        padding: 24px !important;
+    }
+
+    .testi-card p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* Section di mobile */
+    .dashboard-section,
+    .testi-section {
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
 
 
