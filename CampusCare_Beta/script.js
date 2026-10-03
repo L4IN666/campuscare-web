@@ -14,6 +14,39 @@ const buttons = document.querySelectorAll('button');
 // HAMBURGER MENU TOGGLE
 // =========================
 
+
+/* =========================
+   HAMBURGER MENU TOGGLE
+========================= */
+
+const navActions = navMenu?.parentElement.querySelector(
+    ':scope > .flex.items-center.gap-3'
+);
+
+const mobileActionsItem = document.createElement('li');
+mobileActionsItem.className = 'mobile-nav-actions';
+
+function updateMobileNavbar() {
+    if (!navMenu || !navActions || !hamburger) return;
+
+    if (window.innerWidth <= 768) {
+        // Pindahkan tombol yang sudah ada ke menu mobile
+        if (navActions.parentElement !== mobileActionsItem) {
+            mobileActionsItem.appendChild(navActions);
+            navMenu.appendChild(mobileActionsItem);
+        }
+    } else {
+        // Kembalikan tombol ke posisi desktop semula
+        if (navActions.parentElement === mobileActionsItem) {
+            navMenu.removeChild(mobileActionsItem);
+            navMenu.parentElement.insertBefore(navActions, hamburger);
+        }
+
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+    }
+}
+
 if (hamburger) {
     hamburger.addEventListener('click', () => {
         navMenu?.classList.toggle('active');
@@ -21,7 +54,10 @@ if (hamburger) {
     });
 }
 
-// Close menu when clicking on a link
+updateMobileNavbar();
+window.addEventListener('resize', updateMobileNavbar);
+
+// Tutup menu setelah link navigasi ditekan
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         navMenu?.classList.remove('active');

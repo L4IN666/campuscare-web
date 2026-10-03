@@ -1912,10 +1912,22 @@ button {
 }
 
 /* Responsive additions */
-@media (max-width:768px){
+@media (max-width: 768px) {
+    /* Sembunyikan daftar menu sebelum hamburger dibuka */
+    .nav-menu {
+        display: none;
+    }
+
+    /* Tampilkan tombol hamburger */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Daftar menu saat dibuka */
     .nav-menu.active {
         display: flex;
         flex-direction: column;
+        align-items: stretch;
         position: absolute;
         top: 100%;
         left: 0;
@@ -1926,6 +1938,34 @@ button {
         border-bottom: 1px solid var(--border-gray);
         box-shadow: var(--shadow-md);
         animation: rise .35s var(--ease) both;
+    }
+
+    /* Area tombol Masuk dan Buat Laporan */
+    .mobile-nav-actions {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border-gray);
+    }
+
+    .mobile-nav-actions > .flex.items-center.gap-3 {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .mobile-nav-actions #loginBtn,
+    .mobile-nav-actions .btn-primary {
+        width: 100%;
+    }
+
+    .mobile-nav-actions #userChip {
+        width: 100%;
+        justify-content: space-between;
     }
 
     .hamburger.active span:nth-child(1) {
@@ -1939,24 +1979,8 @@ button {
     .hamburger.active span:nth-child(3) {
         transform: translateY(-9px) rotate(-45deg);
     }
-
-    .dashboard-grid,
-    .testi-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .chip-float.c1 {
-        left: 2%;
-    }
-
-    .chip-float.c2 {
-        right: 2%;
-    }
-
-    .bar {
-        grid-template-columns: 110px 1fr;
-    }
 }
+
 
     /* ===== BUBBLE NAVBAR ===== */
 body { padding-top: 77px; }
