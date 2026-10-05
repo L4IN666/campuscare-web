@@ -783,15 +783,28 @@ button {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr 1fr 1fr;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
+}
+
+.footer-section:nth-child(1) {
+    text-align: left;
+}
+
+.footer-section:nth-child(2) {
+    text-align: center;
+}
+
+.footer-section:nth-child(3) {
+    text-align: right;
 }
 
 .footer-section h4 {
     font-size: 16px;
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-md);
+    align-items: flex-end;
 }
 
 .footer-section p {
@@ -819,6 +832,8 @@ button {
 }
 
 .social-links {
+    flex-direction: column;
+    align-items: flex-end;
     display: flex;
     gap: var(--spacing-lg);
 }
