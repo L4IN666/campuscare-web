@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "category": "Ruang Kelas",
+    "title": "AC Rusak di Ruang 301",
+    "location": "Gedung B, Lantai 3",
+    "status": "Diproses",
+    "date": "2024-01-10"
+  },
+  {
+    "id": 2,
+    "category": "Listrik & Penerangan",
+    "title": "Lampu Mati di Koridor",
+    "location": "Gedung A, Lantai 2",
+    "status": "Selesai",
+    "date": "2024-01-08"
+  },
+  {
+    "id": 3,
+    "category": "Fasilitas Air",
+    "title": "Toilet Rusak di WC Pria",
+    "location": "Gedung C, Lantai 1",
+    "status": "Menunggu",
+    "date": "2024-01-12"
+  }
+]
