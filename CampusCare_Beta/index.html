@@ -698,6 +698,18 @@
                     <span>Deskripsi masalah</span>
                 </label>
 
+                <div class="field-file">
+                    <label for="reportImage" class="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#e0e0e0] bg-[#f9fbff] p-3.5 text-center transition hover:border-brand hover:bg-brand-soft/40">
+                        <span class="text-xl">📷</span>
+                        <span class="text-sm font-semibold text-ink" id="uploadLabelText">Unggah Foto Bukti (Opsional)</span>
+                        <input type="file" id="reportImage" accept="image/*" class="hidden">
+                    </label>
+                    <div id="imagePreviewContainer" class="relative mt-2 hidden">
+                        <img id="imagePreview" class="h-44 w-full rounded-xl object-cover border border-solid border-[#e0e0e0] shadow-sm" src="" alt="Pratinjau Bukti">
+                        <button type="button" id="removeImageBtn" class="absolute right-2 top-2 rounded-full bg-red-600/90 px-3 py-1 text-xs font-bold text-white shadow hover:bg-red-700 backdrop-blur-sm">Hapus Foto</button>
+                    </div>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-secondary modal-cancel">
                         Batal

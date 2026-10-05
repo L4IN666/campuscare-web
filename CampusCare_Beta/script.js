@@ -450,11 +450,62 @@ const modal = document.getElementById('reportModal');
 const reportForm = document.getElementById('reportForm');
 let activeFilter = 'Semua';
 let lastFocus = null;
+let currentBase64Image = '';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const allReports = () => {
     const ov = getStatusOverrides();
     return [...getReports(), ...mockReports].map(r => ({ ...r, status: ov[r.id] || r.status }));
+};
+
+const reportImageInput = document.getElementById('reportImage');
+const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+const imagePreview = document.getElementById('imagePreview');
+const removeImageBtn = document.getElementById('removeImageBtn');
+
+if (reportImageInput) {
+    reportImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('Ukuran foto terlalu besar (maksimal 2MB)');
+                reportImageInput.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                currentBase64Image = evt.target.result;
+                imagePreview.src = currentBase64Image;
+                imagePreviewContainer.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removeImageBtn?.addEventListener('click', () => {
+        resetImageUpload();
+    });
+}
+
+function resetImageUpload() {
+    currentBase64Image = '';
+    if (reportImageInput) reportImageInput.value = '';
+    if (imagePreview) imagePreview.src = '';
+    imagePreviewContainer?.classList.add('hidden');
+}
+
+window.openLightbox = function(src) {
+    let lb = document.getElementById('lightboxModal');
+    if (!lb) {
+        lb = document.createElement('div');
+        lb.id = 'lightboxModal';
+        lb.className = 'fixed inset-0 z-[500] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm cursor-pointer';
+        lb.onclick = () => lb.classList.add('hidden');
+        lb.innerHTML = `<img id="lightboxImg" class="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl">`;
+        document.body.appendChild(lb);
+    }
+    document.getElementById('lightboxImg').src = src;
+    lb.classList.remove('hidden');
 };
 
 function renderReports() {
@@ -463,7 +514,9 @@ function renderReports() {
         (activeFilter === 'Semua' || r.status === activeFilter) &&
         `${r.title} ${r.category} ${r.location}`.toLowerCase().includes(q));
     reportList.innerHTML = rows.length
-        ? rows.map(r => `<article class="report-item"><i class="dot ${r.status}"></i>
+        ? rows.map(r => `<article class="report-item">
+            <i class="dot ${r.status}"></i>
+            ${r.image ? `<img src="${r.image}" alt="Bukti Foto" class="h-12 w-12 shrink-0 rounded-xl object-cover border border-solid border-[#e0e0e0] cursor-pointer transition hover:scale-105" onclick="openLightbox('${r.image}')" title="Klik untuk memperbesar foto">` : ''}
             <div><h4>${esc(r.title)}</h4><p>${esc(r.category)} · ${esc(r.location)}</p></div>
             ${statusControl(r)}</article>`).join('')
         : '<p class="empty">Belum ada laporan dengan filter ini. Coba status lain atau buat laporan baru.</p>';
@@ -503,6 +556,7 @@ function closeReportModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    resetImageUpload();
     lastFocus?.focus();
 }
 
@@ -520,7 +574,11 @@ if (modal && reportList) {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(reportForm));
         if (!validateForm(data)) return;
+        if (currentBase64Image) {
+            data.image = currentBase64Image;
+        }
         saveReport(data);
+        resetImageUpload();
         reportForm.reset();
         closeReportModal();
         activeFilter = 'Semua';

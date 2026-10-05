@@ -1364,8 +1364,7 @@ button {
 }
 
 .report-item {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
     gap: 14px;
     padding: 14px 18px;
@@ -1374,6 +1373,11 @@ button {
     border-radius: 14px;
     transition: border-color .25s,transform .25s var(--ease),box-shadow .25s;
     animation: rise .5s var(--ease) both;
+}
+
+.report-item > div {
+    flex: 1;
+    min-width: 0;
 }
 
 .report-item:hover {
