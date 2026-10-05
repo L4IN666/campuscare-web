@@ -623,7 +623,11 @@ button {
     padding: var(--spacing-2xl) var(--spacing-lg);
     background-color: var(--white);
     max-width: 1200px;
-    margin: 0 auto;
+    margin: var(--spacing-2xl) auto;
+
+    border: 1px solid rgba(22, 99, 232, 0.15);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .steps-container {
@@ -686,53 +690,21 @@ button {
     display: none;
 }
 
-/* =========================
-   STATS SECTION
-========================= */
 
-.stats-section {
-    padding: var(--spacing-2xl) var(--spacing-lg);
-    background: linear-gradient(135deg, var(--primary-blue) 0%, #0052a3 100%);
-}
-
-.stats-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-xl);
-}
-
-.stat-card {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-lg);
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
-
-.stat-number {
-    font-size: 40px;
-    font-weight: var(--font-weight-bold);
-    color: var(--white);
-    margin-bottom: var(--spacing-sm);
-}
-
-.stat-label {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: var(--font-weight-medium);
-}
 
 /* =========================
    ABOUT SECTION
 ========================= */
-
 .about-section {
     padding: var(--spacing-2xl) var(--spacing-lg);
     background-color: var(--white);
     max-width: 1200px;
-    margin: 0 auto;
+    margin: var(--spacing-2xl) auto;
+
+    border: 1px solid rgba(22, 99, 232, 0.15);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow-md);
 }
 
 .about-content {
