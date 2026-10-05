@@ -2166,3 +2166,23 @@ html { scroll-padding-top: 96px; }
 
 
 
+
+
+/* =========================
+   API STATE (Pertemuan 4 - Loading & Error)
+========================= */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--light-blue);
+    border-top-color: var(--primary-blue);
+    border-radius: 50%;
+    vertical-align: -3px;
+    margin-right: 6px;
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

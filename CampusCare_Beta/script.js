@@ -310,35 +310,34 @@ function validateForm(formData) {
 }
 
 // =========================
-// DYNAMIC DATA LOADING (Mock)
+// API: AMBIL DATA LAPORAN (Pertemuan 4 - Task 1, 2, 3)
 // =========================
 
-const mockReports = [
-    {
-        id: 1,
-        category: 'Ruang Kelas',
-        title: 'AC Rusak di Ruang 301',
-        location: 'Gedung B, Lantai 3',
-        status: 'Diproses',
-        date: '2024-01-10'
-    },
-    {
-        id: 2,
-        category: 'Listrik & Penerangan',
-        title: 'Lampu Mati di Koridor',
-        location: 'Gedung A, Lantai 2',
-        status: 'Selesai',
-        date: '2024-01-08'
-    },
-    {
-        id: 3,
-        category: 'Fasilitas Air',
-        title: 'Toilet Rusak di WC Pria',
-        location: 'Gedung C, Lantai 1',
-        status: 'Menunggu',
-        date: '2024-01-12'
+const API_URL = 'data/reports.json';   // "API" lokal berupa file JSON
+const SIMULATE_DELAY_MS = 800;         // jeda buatan agar loading terlihat saat demo (isi 0 untuk mematikan)
+
+let apiReports = [];
+let apiState = 'loading';              // 'loading' | 'success' | 'error'
+
+async function loadReports() {
+    apiState = 'loading';
+    renderReports();                   // Task 3: tampilkan loading
+
+    try {
+        if (SIMULATE_DELAY_MS) await new Promise(r => setTimeout(r, SIMULATE_DELAY_MS));
+        const response = await fetch(API_URL);                  // Task 1: kirim request
+        if (!response.ok) throw new Error('Gagal mengambil data');
+        apiReports = await response.json();                     // JSON -> array of objects
+        apiState = 'success';
+    } catch (error) {
+        console.error(error);                                   // Task 3: tangani error
+        apiReports = [];
+        apiState = 'error';
     }
-];
+
+    renderReports();                   // Task 2: tampilkan data ke DOM
+    renderCharts();
+}
 
 // =========================
 // LOCAL STORAGE
@@ -394,8 +393,6 @@ document.addEventListener('DOMContentLoaded', () => {
         hero.classList.add('fade-in');
     }
 
-    // Log mock data
-    console.log('Sample reports:', mockReports);
 });
 
 // =========================
@@ -455,7 +452,7 @@ let currentBase64Image = '';
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const allReports = () => {
     const ov = getStatusOverrides();
-    return [...getReports(), ...mockReports].map(r => ({ ...r, status: ov[r.id] || r.status }));
+    return [...getReports(), ...apiReports].map(r => ({ ...r, status: ov[r.id] || r.status }));
 };
 
 const reportImageInput = document.getElementById('reportImage');
@@ -509,6 +506,22 @@ window.openLightbox = function(src) {
 };
 
 function renderReports() {
+    if (!reportList) return;
+
+    // Task 3: state loading & error
+    if (apiState === 'loading') {
+        reportList.innerHTML = '<p class="empty"><span class="spinner"></span>Mengambil data...</p>';
+        return;
+    }
+    if (apiState === 'error') {
+        reportList.innerHTML = `<div class="empty">
+            <p><b>Gagal mengambil data</b></p>
+            <p>Terjadi kesalahan saat mengambil data. Silakan coba lagi.</p>
+            <button type="button" id="retryBtn" class="btn-secondary" style="margin-top:12px">Coba Lagi</button>
+        </div>`;
+        return;
+    }
+
     const q = searchInput ? searchInput.value.toLowerCase() : '';
     const rows = allReports().filter(r =>
         (activeFilter === 'Semua' || r.status === activeFilter) &&
@@ -523,6 +536,9 @@ function renderReports() {
 }
 
 function renderCharts() {
+    // Elemen grafik (#donut, #donutLegend, #bars) tidak ada di halaman ini.
+    // Tanpa pengecekan ini, error akan menghentikan seluruh script (termasuk tombol Masuk).
+    if (!document.getElementById('donut')) return;
     const st = { Selesai: 86, Diproses: 24, Menunggu: 12 };
     const cat = { 'Listrik & Penerangan': 42, 'AC & Pendingin': 37, 'Jaringan Wi-Fi': 31, 'Fasilitas Air': 26, 'Ruang Kelas': 24 };
     allReports().forEach(r => { st[r.status]++; cat[r.category] = (cat[r.category] || 0) + 1; });
@@ -802,3 +818,13 @@ if (loginModal) {
 
     updateAuthUI();
 }
+
+// =========================
+// START: AMBIL DATA DARI API + TOMBOL "COBA LAGI"
+// =========================
+
+reportList?.addEventListener('click', e => {
+    if (e.target.closest('#retryBtn')) loadReports();
+});
+
+loadReports();
