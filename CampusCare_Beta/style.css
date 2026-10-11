@@ -2186,3 +2186,40 @@ html { scroll-padding-top: 96px; }
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* =========================
+   CAMPUSCARE BACKGROUND IMAGE
+========================= */
+
+body {
+    background: #f3f7ff !important;
+    position: relative;
+}
+
+/* Foto transparan di seluruh halaman */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+
+    background-image: url("./img/bgforeverything.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+/* Konten berada di atas foto */
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Section transparan agar foto terlihat */
+.hero,
+.categories-section {
+    background: transparent !important;
+}
