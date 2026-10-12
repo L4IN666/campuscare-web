@@ -1,0 +1,19 @@
+$kind: http-request
+url: http://localhost:3000/api/reports
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"category\": \"Ruang Kelas\",\r
+
+    \  \"title\": \"Proyektor Rusak\",\r
+
+    \  \"location\": \"Gedung A, Ruang 201\",\r
+
+    \  \"status\": \"Menunggu\"\r
+
+    }"
+order: 2000

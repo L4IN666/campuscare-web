@@ -313,7 +313,7 @@ function validateForm(formData) {
 // API: AMBIL DATA LAPORAN (Pertemuan 4 - Task 1, 2, 3)
 // =========================
 
-const API_URL = 'data/reports.json';   // "API" lokal berupa file JSON
+const API_URL = 'http://localhost:3000/api/reports';   // "API" lokal berupa file JSON
 const SIMULATE_DELAY_MS = 800;         // jeda buatan agar loading terlihat saat demo (isi 0 untuk mematikan)
 
 let apiReports = [];
@@ -508,7 +508,6 @@ window.openLightbox = function(src) {
 function renderReports() {
     if (!reportList) return;
 
-    // Task 3: state loading & error
     if (apiState === 'loading') {
         reportList.innerHTML = '<p class="empty"><span class="spinner"></span>Mengambil data...</p>';
         return;
@@ -526,12 +525,17 @@ function renderReports() {
     const rows = allReports().filter(r =>
         (activeFilter === 'Semua' || r.status === activeFilter) &&
         `${r.title} ${r.category} ${r.location}`.toLowerCase().includes(q));
+        
     reportList.innerHTML = rows.length
-        ? rows.map(r => `<article class="report-item">
+        ? rows.map(r => `<article class="report-item" style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
             <i class="dot ${r.status}"></i>
             ${r.image ? `<img src="${r.image}" alt="Bukti Foto" class="h-12 w-12 shrink-0 rounded-xl object-cover border border-solid border-[#e0e0e0] cursor-pointer transition hover:scale-105" onclick="openLightbox('${r.image}')" title="Klik untuk memperbesar foto">` : ''}
-            <div><h4>${esc(r.title)}</h4><p>${esc(r.category)} · ${esc(r.location)}</p></div>
-            ${statusControl(r)}</article>`).join('')
+            <div style="flex: 1; min-width: 0;">
+                <h4>${esc(r.title)}</h4>
+                <p>${esc(r.category)} · ${esc(r.location)}</p>
+            </div>
+            ${statusControl(r)}
+        </article>`).join('')
         : '<p class="empty">Belum ada laporan dengan filter ini. Coba status lain atau buat laporan baru.</p>';
 }
 
@@ -586,23 +590,39 @@ if (modal && reportList) {
         if (e.key === 'Escape' && modal.classList.contains('open')) closeReportModal();
     });
 
-    reportForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(reportForm));
-        if (!validateForm(data)) return;
-        if (currentBase64Image) {
-            data.image = currentBase64Image;
-        }
-        saveReport(data);
+    reportForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(reportForm));
+    if (!validateForm(data)) return;
+    
+    if (currentBase64Image) {
+        data.image = currentBase64Image;
+    }
+
+    try {
+        // Kirim request POST ke Backend
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) throw new Error('Gagal menambah laporan');
+
         resetImageUpload();
         reportForm.reset();
         closeReportModal();
         activeFilter = 'Semua';
         filterButtons.forEach(b => b.classList.toggle('active', b.textContent.trim() === 'Semua'));
-        renderReports();
-        renderCharts();
+        
+        // Reload data dari server
+        await loadReports();
         showNotification('Laporan terkirim. Pantau statusnya di daftar laporan.');
-    });
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal mengirim laporan ke server.');
+    }
+});
 
     filterButtons.forEach(b => b.addEventListener('click', () => { activeFilter = b.textContent.trim(); renderReports(); }));
     searchInput?.addEventListener('input', renderReports);
@@ -660,9 +680,20 @@ function getStatusOverrides() {
 }
 
 function statusControl(r) {
-    if (!isAdmin()) return `<span class="status ${r.status}">${r.status}</span>`;
-    const opts = STATUS.map(s => `<option${s === r.status ? ' selected' : ''}>${s}</option>`).join('');
-    return `<select data-id="${r.id}" aria-label="Ubah status laporan" class="rounded-full border border-solid border-[#e0e0e0] bg-white px-3 py-1 text-xs font-semibold text-ink outline-none focus:border-brand">${opts}</select>`;
+  if (!isAdmin()) return `<span class="status ${r.status}" style="margin-left: auto;">${r.status}</span>`;
+  
+  const opts = STATUS.map(s => `<option${s === r.status ? ' selected' : ''}>${s}</option>`).join('');
+  
+  return `
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+      <select data-id="${r.id}" aria-label="Ubah status laporan" class="rounded-full border border-solid border-[#e0e0e0] bg-white px-3 py-1 text-xs font-semibold text-ink outline-none focus:border-brand">
+        ${opts}
+      </select>
+      <button type="button" onclick="deleteReportFromWeb(${r.id})" class="rounded-full bg-red-100 text-red-600 px-3 py-1 text-xs font-semibold hover:bg-red-600 hover:text-white transition">
+        Hapus
+      </button>
+    </div>
+  `;
 }
 
 function setLoginRole(role) {
@@ -752,17 +783,50 @@ if (loginModal) {
         showNotification('Kamu sudah keluar.');
     });
 
-    // Admin: ubah status laporan
-    reportList?.addEventListener('change', e => {
-        const sel = e.target.closest('select[data-id]');
-        if (!sel || !isAdmin()) return;
-        const map = getStatusOverrides();
-        map[sel.dataset.id] = sel.value;
-        localStorage.setItem('campuscare_status', JSON.stringify(map));
-        renderReports();
-        renderCharts();
-        showNotification('Status laporan diperbarui.');
-    });
+    // Admin: ubah status laporan via HTTP PUT
+reportList?.addEventListener('change', async (e) => {
+    const sel = e.target.closest('select[data-id]');
+    if (!sel || !isAdmin()) return;
+
+    const reportId = sel.dataset.id;
+    const newStatus = sel.value;
+
+    try {
+        const response = await fetch(`${API_URL}/${reportId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+
+        if (!response.ok) throw new Error('Gagal memperbarui status');
+
+        await loadReports();
+        showNotification('Status laporan berhasil diperbarui.');
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal memperbarui status ke server.');
+    }
+});
+
+// Admin: hapus laporan via HTTP DELETE
+window.deleteReportFromWeb = async function(id) {
+    if (!isAdmin()) return;
+    if (!confirm('Apakah Anda yakin ingin menghapus laporan ini?')) return;
+
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) throw new Error('Gagal menghapus laporan');
+
+        await loadReports();
+        showNotification('Laporan berhasil dihapus.');
+    } catch (err) {
+        console.error(err);
+        showNotification('Gagal menghapus laporan dari server.');
+    }
+};
 
     // =========================
 // WHY SHOWCASE (Mengapa Memilih CampusCare)
