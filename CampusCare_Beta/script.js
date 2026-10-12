@@ -257,8 +257,8 @@ const progressBar = document.querySelector('.progress-bar');
 
 // Highlight the nav link of the section currently in view
 const spy = new IntersectionObserver((entries) => {
-    entries.forEach(e => e.isIntersecting && navLinks.forEach(l =>
-        l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id)));
+   entries.forEach(e => e.isIntersecting && navLinks.forEach(l =>
+     l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id || l.hasAttribute('data-current')))); 
 }, { rootMargin: '-45% 0px -50% 0px' });
 document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
 
@@ -580,8 +580,9 @@ function closeReportModal() {
     lastFocus?.focus();
 }
 
-if (modal && reportList) {
-    reportForm.elements.category.innerHTML = [...categoryCards].map(c => `<option>${esc(c.querySelector('h3').textContent)}</option>`).join('');
+if (modal) {
+    const CATEGORIES = ['Ruang Kelas','Listrik & Penerangan','Fasilitas Air','AC & Pendingin','Peralatan IT','Jaringan Wi-Fi','Pintu & Jendela','Struktur Bangunan','Kebersihan'];
+    reportForm.elements.category.innerHTML = CATEGORIES.map(c => `<option>${esc(c)}</option>`).join('');
 
     modal.addEventListener('click', e => {
         if (e.target === modal || e.target.closest('.modal-close, .modal-cancel')) closeReportModal();
@@ -878,7 +879,6 @@ window.deleteReportFromWeb = async function(id) {
 
     show(0);
 })();
-    
 
     updateAuthUI();
 }
@@ -888,7 +888,199 @@ window.deleteReportFromWeb = async function(id) {
 // =========================
 
 reportList?.addEventListener('click', e => {
-    if (e.target.closest('#retryBtn')) loadReports();
+    if (reportList) loadReports();
 });
 
 loadReports();
+
+// =========================
+// MEGA MENU + PAGE WIPE TRANSITION (antar halaman & dalam halaman)
+// =========================
+(function () {
+    const items = document.querySelectorAll('.has-mega');
+    const navMenu = document.querySelector('.nav-menu');
+    const hamburger = document.querySelector('.hamburger');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = () => window.innerWidth <= 768;
+    const closeAll = () => items.forEach(i => i.classList.remove('open'));
+    const norm = p => p.replace(/index\.html$/, '');
+
+    /* ---------- buka/tutup menu di mobile ---------- */
+    items.forEach(item => {
+        const trigger = item.querySelector(':scope > .nav-link');
+        trigger.addEventListener('click', e => {
+            if (!isMobile()) return;          // desktop: pakai transisi di bawah
+            e.preventDefault();
+            e.stopImmediatePropagation();     // jangan tutup hamburger
+            const wasOpen = item.classList.contains('open');
+            closeAll();
+            item.classList.toggle('open', !wasOpen);
+        }, true);
+        item.addEventListener('mouseleave', () => item.classList.remove('suppress'));
+    });
+    document.addEventListener('click', e => { if (!e.target.closest('.has-mega')) closeAll(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+    window.addEventListener('resize', closeAll);
+
+    /* ---------- overlay kolom warna ---------- */
+    const COLORS = ['#fffbfd', '#5798f9', '#1400ee', '#5798f9', '#fffbfd'];
+    const DURATION = [520, 440, 580, 480, 540];
+    const STAGGER = 60;
+    const EASE = 'cubic-bezier(.76,0,.24,1)';
+
+    const wipe = document.createElement('div');
+    wipe.className = 'wipe';
+    wipe.setAttribute('aria-hidden', 'true');
+   const cols = COLORS.map((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'wipe-col';
+    d.style.background = c;
+    // posisi absolut + sedikit overlap supaya tidak ada celah
+    d.style.position = 'absolute';
+    d.style.top = '0';
+    d.style.bottom = '0';
+    d.style.left = `calc(${i * 20}% - 1px)`;
+    d.style.width = 'calc(20% + 2px)';
+    d.style.willChange = 'transform';
+    wipe.appendChild(d);
+    return d;
+});
+    // logo di tengah layar saat kolom menutup halaman
+    const logo = document.createElement('div');
+    logo.className = 'wipe-logo';
+    logo.innerHTML = '<div class="tile"><img src="img/campuscare-logo.png" alt=""></div><span>CampusCare</span>';
+    wipe.appendChild(logo);
+
+    document.body.appendChild(wipe);
+
+    const play = (from, to) => Promise.all(cols.map((el, i) =>
+        el.animate(
+            [{ transform: `scaleY(${from})` }, { transform: `scaleY(${to})` }],
+            { duration: DURATION[i], delay: i * STAGGER, easing: EASE, fill: 'both' }
+        ).finished
+    ));
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+
+    const logoIn = () => logo.animate(
+        [{ opacity: 0, transform: 'scale(.7)' }, { opacity: 1, transform: 'scale(1)' }],
+        { duration: 380, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'forwards' }
+    ).finished;
+    const logoOut = () => logo.animate(
+        [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(.9)' }],
+        { duration: 220, easing: 'ease-in', fill: 'forwards' }
+    ).finished;
+
+    // buka kartu "Tentang CampusCare" (kartu ke-4) saat tujuannya section #tentang
+    const openAbout = el => {
+        if (el && el.id === 'tentang') document.querySelector('[data-why-card]:nth-child(4) button')?.click();
+    };
+
+    let busy = false;
+
+    function resetWipe() {
+        cols.forEach(c => { c.getAnimations().forEach(a => a.cancel()); c.style.transform = ''; });
+        logo.getAnimations().forEach(a => a.cancel());
+        logo.style.opacity = '';
+        wipe.classList.remove('on');
+        document.documentElement.classList.remove('wipe-pending');
+        busy = false;
+    }
+
+    /* scroll dalam halaman yang sama */
+    async function goTo(el) {
+        if (reduce) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); openAbout(el); return; }
+        busy = true;
+        cols.forEach(c => c.style.transformOrigin = 'top');
+        wipe.classList.add('on');
+
+        await play(0, 1);                                            // kolom turun menutup layar
+        el.scrollIntoView({ behavior: 'instant', block: 'start' });  // pindah diam-diam
+        openAbout(el);                                               // buka kartu Tentang bila perlu
+        await logoIn();                                              // logo muncul di tengah
+        await wait(250);
+
+        cols.forEach(c => c.style.transformOrigin = 'bottom');
+        logoOut();
+        await play(1, 0);                                            // kolom jatuh ke bawah
+
+        resetWipe();
+        el.classList.add('flash-target');
+        setTimeout(() => el.classList.remove('flash-target'), 1800);
+    }
+
+    /* pindah ke halaman lain: tutup layar dulu, lalu buka halaman */
+    async function leaveTo(href) {
+        if (reduce) { location.href = href; return; }
+        busy = true;
+        cols.forEach(c => c.style.transformOrigin = 'top');
+        wipe.classList.add('on');
+        await play(0, 1);
+        await logoIn();                                              // logo muncul sebelum pindah halaman
+        await wait(150);
+        sessionStorage.setItem('ccWipe', '1');
+        location.href = href;
+    }
+
+    /* baru tiba dari halaman lain: layar tertutup, lalu kolom jatuh membuka */
+    async function arrive() {
+        sessionStorage.removeItem('ccWipe');
+        if (reduce) { document.documentElement.classList.remove('wipe-pending'); return; }
+        busy = true;
+        cols.forEach(c => { c.style.transformOrigin = 'bottom'; c.style.transform = 'scaleY(1)'; });
+        wipe.classList.add('on');
+        logo.style.opacity = '1';                                    // logo langsung terlihat di tengah
+        document.documentElement.classList.remove('wipe-pending');   // halaman tersembunyi di balik kolom
+        if (location.hash) {
+            const t = document.querySelector(location.hash);
+            t?.scrollIntoView({ behavior: 'instant', block: 'start' });
+            openAbout(t);
+        }
+        await wait(450);
+        logoOut();
+        await play(1, 0);
+        resetWipe();
+        if (location.hash) {
+            const el = document.querySelector(location.hash);
+            el?.classList.add('flash-target');
+            setTimeout(() => el?.classList.remove('flash-target'), 1800);
+        }
+    }
+
+    if (sessionStorage.getItem('ccWipe')) arrive();
+
+    // tombol Back (bfcache): jangan biarkan kolom menutupi halaman
+    window.addEventListener('pageshow', e => { if (e.persisted) { sessionStorage.removeItem('ccWipe'); resetWipe(); } });
+
+    /* ---------- klik semua link navbar + item mega menu ---------- */
+    document.addEventListener('click', e => {
+        const a = e.target.closest('.mega a, .nav-menu a.nav-link, a.brand');
+        if (!a) return;
+
+        // mobile: teks menu yang punya panel hanya buka/tutup panel
+        if (a.matches('.nav-link') && a.parentElement.classList.contains('has-mega') && isMobile()) return;
+
+        const href = a.getAttribute('href');
+        if (!href || href === '#' && a.dataset.action !== 'report') return;
+
+        e.preventDefault();
+        e.stopPropagation();                                // cegah smooth-scroll bawaan script.js
+        if (busy) return;
+
+        closeAll();
+        a.closest('.has-mega')?.classList.add('suppress');
+        a.blur();
+        navMenu?.classList.remove('active');
+        hamburger?.classList.remove('active');
+
+        if (a.dataset.action === 'report') {                // tombol "Mulai Lapor"
+            if (typeof openReportModal === 'function') openReportModal();
+            return;
+        }
+
+        const url = new URL(href, location.href);
+        if (norm(url.pathname) !== norm(location.pathname)) { leaveTo(url.href); return; }  // halaman lain
+
+        const target = url.hash ? document.querySelector(url.hash) : null;                  // halaman ini
+        if (target) goTo(target);
+    }, true);
+})();
