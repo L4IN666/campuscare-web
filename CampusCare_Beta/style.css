@@ -2223,3 +2223,279 @@ body > * {
 .categories-section {
     background: transparent !important;
 }
+
+/* =========================================================
+   MEGA MENU (Cara Kerja) + WIPE TRANSITION
+========================================================= */
+
+.has-mega { position: static; }
+
+/* perbesar area hover link agar panel tidak menutup saat kursor turun */
+.has-mega > .nav-link {
+    display: inline-block;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    margin-top: -22px;
+    margin-bottom: -22px;
+}
+.has-mega > .nav-link::after { bottom: 16px; }
+
+.mega {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding-top: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity .25s ease, transform .35s var(--ease), visibility .25s;
+    z-index: 60;
+}
+
+.has-mega:hover > .mega,
+.has-mega:focus-within > .mega,
+.has-mega.open > .mega {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
+/* tutup panel sesaat setelah item diklik (kursor masih di atasnya) */
+.has-mega.suppress > .mega { opacity: 0; visibility: hidden; }
+
+.mega-panel {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 24px;
+    background: #0a0f1c;
+    box-shadow: 0 24px 60px rgba(6, 18, 46, .45);
+}
+
+/* ---- kolom kiri: daftar ---- */
+.mega-list { display: grid; gap: 10px; }
+
+.mega-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #17191f;
+    color: #fff;
+    transition: background .25s, transform .3s var(--ease);
+}
+.mega-item:hover { background: #20242e; transform: translateX(4px); }
+
+.mega-ico {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f7f7f7;
+    font-size: 22px;
+    z-index: 1;
+}
+.mega-ico::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: #6b6f78;
+    transform: rotate(-8deg);
+    z-index: -1;
+    transition: transform .3s var(--ease);
+}
+.mega-item:hover .mega-ico::before { transform: rotate(-15deg); }
+
+.mega-item b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+}
+.mega-item small {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #a3a8b3;
+}
+
+/* ---- kolom kanan: kartu ---- */
+.mega-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 330px;
+    padding: 16px;
+    border-radius: 14px;
+    overflow: hidden;
+    color: #fff;
+    background-size: cover;
+    background-position: center;
+    isolation: isolate;
+}
+.mega-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(6, 12, 28, .92), rgba(6, 12, 28, .25) 60%, rgba(6, 12, 28, .1));
+    z-index: -1;
+}
+.mega-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+    transition: transform .6s var(--ease);
+}
+.mega-card:hover::after { transform: scale(1.06); }
+
+.mega-card b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -.01em;
+}
+.mega-card small { font-size: 13px; color: #d5dbea; }
+
+.mega-card.c-blue {
+    background-image:
+        url('img/daus.jpeg');
+}
+.mega-card.c-green {
+    background-image:
+        url('img/dian.jpeg');
+}
+
+/* ---- mobile: accordion di dalam menu hamburger ---- */
+@media (max-width: 768px) {
+    .has-mega > .nav-link { padding: 0; margin: 0; margin-top: 0; margin-bottom: 0; }
+    .mega {
+        position: static;
+        display: none;
+        padding-top: 10px;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+    .has-mega:hover > .mega { display: none; }
+    .has-mega.open > .mega { display: block; }
+    .mega-panel { grid-template-columns: 1fr; }
+    .mega-card { min-height: 120px; }
+}
+
+/* =========================
+   WIPE TRANSITION (kolom warna)
+========================= */
+.wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+}
+.wipe.on { visibility: visible; pointer-events: all; }
+.wipe-col {
+    flex: 1 0 calc(20% + 1px);
+    height: 100%;
+    transform: scaleY(0);
+    transform-origin: top;
+    will-change: transform;
+}
+
+/* sorot tujuan setelah transisi selesai */
+.flash-target { animation: flashTarget 1.6s ease-out; }
+@keyframes flashTarget {
+    0%   { box-shadow: 0 0 0 0 rgba(22, 99, 232, .55); }
+    40%  { box-shadow: 0 0 0 10px rgba(22, 99, 232, .25); }
+    100% { box-shadow: 0 0 0 20px rgba(22, 99, 232, 0); }
+}
+
+/* Blur latar belakang saat mega menu terbuka */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 250; /* di bawah navbar (300), di atas konten */
+    background: rgba(6, 18, 46, .25);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s ease, visibility .3s;
+}
+
+body:has(.has-mega:hover:not(.suppress)),
+body:has(.has-mega:focus-within:not(.suppress)),
+body:has(.has-mega.open) {
+    /* sengaja kosong: hanya dipakai sebagai pemicu di bawah */
+}
+
+body:has(.has-mega:hover:not(.suppress))::after,
+body:has(.has-mega:focus-within:not(.suppress))::after,
+body:has(.has-mega.open)::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* cegah kedipan saat tiba dari transisi halaman */
+html.wipe-pending body { opacity: 0; animation: wpFallback 0s 2s forwards; }
+@keyframes wpFallback { to { opacity: 1; } }
+
+/* =========================
+   LOGO DI TENGAH TRANSISI
+========================= */
+.wipe-logo {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    opacity: 0;
+    pointer-events: none;
+}
+.wipe-logo .tile {
+    display: grid;
+    place-items: center;
+    width: 104px;
+    height: 104px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 20px 50px rgba(6, 18, 46, .35);
+}
+.wipe-logo img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+}
+.wipe-logo span {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: #fff;
+    text-shadow: 0 4px 18px rgba(6, 18, 46, .45);
+}
+
+

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script>if (sessionStorage.getItem('ccWipe')) document.documentElement.classList.add('wipe-pending');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusCare - Sistem Pelaporan Fasilitas Kampus</title>
@@ -52,12 +53,45 @@
             </div>
             </a>
 
-            <ul class="nav-menu">
-                <li><a href="#beranda" class="nav-link">Beranda</a></li>
-                <li><a href="#laporan" class="nav-link">Laporan</a></li>
-                <li><a href="#cara-kerja" class="nav-link">Cara Kerja</a></li>
-                <li><a href="#tentang" class="nav-link">Tentang</a></li>
-            </ul>
+      <ul class="nav-menu">
+    <li><a href="#beranda" class="nav-link">Beranda</a></li>
+    <li><a href="#laporan" class="nav-link">Laporan</a></li>
+
+    <!-- CARA KERJA: mega menu menuju halaman cara-kerja.html -->
+    <li class="has-mega">
+        <a href="cara-kerja.html" class="nav-link">Cara Kerja</a>
+        <div class="mega">
+            <div class="mega-panel">
+                <div class="mega-list">
+                    <a href="cara-kerja.html#kategori" class="mega-item">
+                        <span class="mega-ico">🗂️</span>
+                        <span><b>Kategori Fasilitas</b><small>Pilih fasilitas yang ingin dilaporkan.</small></span>
+                    </a>
+                    <a href="cara-kerja.html#langkah-1" class="mega-item">
+                        <span class="mega-ico">📋</span>
+                        <span><b>Pilih Kategori</b><small>Tentukan fasilitas yang bermasalah.</small></span>
+                    </a>
+                    <a href="cara-kerja.html#langkah-2" class="mega-item">
+                        <span class="mega-ico">✍️</span>
+                        <span><b>Isi Detail</b><small>Lokasi, deskripsi, dan foto bukti.</small></span>
+                    </a>
+                    <a href="cara-kerja.html#langkah-3" class="mega-item">
+                        <span class="mega-ico">📊</span>
+                        <span><b>Pantau Status</b><small>Menunggu, diproses, selesai.</small></span>
+                    </a>
+                </div>
+                <a href="#" data-action="report" class="mega-card c-blue">
+                    <b>Mulai Lapor</b><small>Buat laporan baru sekarang</small>
+                </a>
+                <a href="index.html#laporan" class="mega-card c-green">
+                    <b>Cek Status</b><small>Pantau progres laporanmu</small>
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <li><a href="#tentang" class="nav-link">Tentang</a></li>
+</ul>
 
             <div class="flex items-center gap-3">
                 <button type="button" id="loginBtn" class="rounded-full border border-solid border-[#e0e0e0] bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-brand hover:text-brand">Masuk</button>
@@ -110,9 +144,9 @@
                  <a href="#reportList" class="inline-flex items-center gap-2 rounded-xl border-[1.5px] border-solid border-brand/40 bg-white/70 px-5 py-3 text-sm font-medium text-brand transition duration-300 hover:-translate-y-0.5 hover:border-brand hover:bg-brand-soft sm:px-7 sm:py-3.5 sm:text-base">
                         Cek Status Laporan <span aria-hidden="true">→</span>
                 </a>
-</div>
-
             </div>
+
+         </div>
 
             <div class="hero-image">
 
@@ -142,7 +176,7 @@
         </section>
 
         <!-- SEARCH & FILTER SECTION -->
-        <section class="search-section">
+        <section id="laporan" class="search-section">
             <div class="search-container">
 
                 <div class="search-box">
@@ -163,9 +197,10 @@
         </section>
 
         <!-- WELCOME SECTION -->
-<section class="welcome-section">
+<section id="tentang" class="welcome-section">
 
     <!-- Judul -->
+      
     <div class="mx-auto mb-10 max-w-[620px] text-center">
         <span class="mb-3 inline-block rounded-full bg-brand-soft px-3 py-1 text-xs font-bold tracking-wide text-brand">Kenapa CampusCare</span>
         <h2 class="mb-3 font-display text-[1.6rem] font-bold leading-[1.15] text-ink sm:text-4xl">Mengapa Memilih CampusCare?</h2>
@@ -227,7 +262,22 @@
                 </div>
                 <span class="pointer-events-none absolute bottom-1 right-5 hidden font-display text-7xl font-extrabold leading-none text-white/15 opacity-0 transition-opacity duration-500 group-data-[active=true]:opacity-100 lg:block">03</span>
             </div>
-
+            
+            <div data-why-card data-active="false" style="--c:#0b2a6f"
+                 class="group relative flex flex-[0_0_auto] flex-col overflow-hidden rounded-3xl bg-[color:var(--c)] text-white transition-[flex-grow,transform,filter] duration-500 hover:brightness-125 data-[active=true]:flex-[1_1_auto] data-[active=true]:-rotate-1">
+                <button type="button" aria-expanded="false"
+                        class="flex w-full cursor-pointer items-center gap-3 bg-transparent px-6 py-4 text-left text-white">
+                    <span class="text-sm opacity-0 transition-opacity duration-300 group-data-[active=true]:opacity-100">▶</span>
+                    <span class="-ml-6 font-display text-base font-bold transition-all duration-300 group-data-[active=true]:ml-0 group-data-[active=true]:text-2xl">Tentang CampusCare</span>
+                </button>
+                <div class="grid grid-rows-[0fr] px-6 opacity-0 transition-[grid-template-rows,opacity] duration-500 group-data-[active=true]:grid-rows-[1fr] group-data-[active=true]:opacity-100">
+                    <div class="min-h-0 overflow-hidden">
+                        <p class="pb-5 text-[15px] leading-relaxed text-white/90">CampusCare.</p>
+                    </div>
+                </div>
+                <span class="pointer-events-none absolute bottom-1 right-5 hidden font-display text-7xl font-extrabold leading-none text-white/15 opacity-0 transition-opacity duration-500 group-data-[active=true]:opacity-100 lg:block">03</span>
+            </div>
+            
         </div>
 
         <!-- KANAN: panel visual -->
@@ -322,6 +372,14 @@
                 </div>
             </div>
 
+            <!-- SLide 4-->
+            <div data-why-slide data-active="false" aria-hidden="true"
+                 class="pointer-events-none absolute inset-0 flex translate-y-3 items-center justify-center p-5 pb-12 opacity-0 transition-all duration-500 data-[active=true]:pointer-events-auto data-[active=true]:translate-y-0 data-[active=true]:opacity-100 sm:p-8 sm:pb-12">
+                <div class="w-full max-w-[380px] rounded-2xl bg-white p-5 shadow-[0_18px_40px_rgba(0,0,0,.3)]">
+                    <p class="mb-3 font-display text-[15px] font-bold text-ink">Tentang CampusCare</p>
+                    <p class="text-sm text-[#5b6b86]">CampusCare adalah inisiatif dari Universitas Muhammadiyah Malang untuk meningkatkan kualitas hidup akademik melalui sistem pelaporan fasilitas yang transparan dan responsif. Kami percaya bahwa setiap mahasiswa berhak mendapatkan lingkungan belajar yang optimal</p>
+                </div>
+
             <!-- Indikator -->
             <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                 <button type="button" data-why-dot data-active="true" aria-label="Tampilkan: Lapor sekali klik"
@@ -330,9 +388,11 @@
                         class="h-2 w-2 rounded-full bg-white/40 p-0 transition-all duration-300 data-[active=true]:w-6 data-[active=true]:bg-white"></button>
                 <button type="button" data-why-dot data-active="false" aria-label="Tampilkan: Lokasi jelas"
                         class="h-2 w-2 rounded-full bg-white/40 p-0 transition-all duration-300 data-[active=true]:w-6 data-[active=true]:bg-white"></button>
+                <button type="button" data-why-dot data-active="false" aria-label="Tampilkan: Lokasi jelas"
+                        class="h-2 w-2 rounded-full bg-white/40 p-0 transition-all duration-300 data-[active=true]:w-6 data-[active=true]:bg-white"></button>
             </div>
-
         </div>
+     </div>
 
     </div>
 
@@ -344,140 +404,7 @@
 
 </section>
 
-        <!-- CATEGORIES SECTION -->
-        <section id="laporan" class="categories-section">
-
-            <div class="section-header">
-                <h2>Kategori Fasilitas Kampus</h2>
-                <p>Pilih kategori fasilitas yang mengalami kerusakan atau membutuhkan perbaikan</p>
-            </div>
-
-            <div class="categories-container">
-
-                <div class="category-card">
-                    <div class="card-icon">🪑</div>
-                    <h3>Ruang Kelas</h3>
-                    <p>Laporkan kerusakan meja, kursi, papan tulis, proyektor, dan fasilitas kelas lainnya.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">💡</div>
-                    <h3>Listrik & Penerangan</h3>
-                    <p>Laporkan lampu mati, stop kontak rusak, saklar bermasalah, atau gangguan listrik lainnya.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">🚿</div>
-                    <h3>Fasilitas Air</h3>
-                    <p>Laporkan keran rusak, toilet bermasalah, air tidak mengalir, atau fasilitas air lainnya.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">❄️</div>
-                    <h3>AC & Pendingin</h3>
-                    <p>Laporkan AC tidak dingin, AC mati, kipas rusak, atau masalah pendinginan lainnya.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">🖥️</div>
-                    <h3>Peralatan IT</h3>
-                    <p>Laporkan komputer tidak menyala, monitor, keyboard, mouse, atau perangkat IT lainnya.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">📶</div>
-                    <h3>Jaringan Wi-Fi</h3>
-                    <p>Laporkan koneksi Wi-Fi bermasalah, sinyal lemah, atau jaringan yang tidak tersedia.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">🚪</div>
-                    <h3>Pintu & Jendela</h3>
-                    <p>Laporkan pintu, kunci, jendela, atau fasilitas sejenis yang mengalami kerusakan.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">🏢</div>
-                    <h3>Struktur Bangunan</h3>
-                    <p>Laporkan kerusakan lantai, dinding, plafon, atau bagian bangunan kampus lainnya.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-                <div class="category-card">
-                    <div class="card-icon">🗑️</div>
-                    <h3>Kebersihan</h3>
-                    <p>Laporkan ruangan kotor, tempat sampah penuh, atau fasilitas kebersihan yang bermasalah.</p>
-                    <button class="btn-card">Lapor Sekarang</button>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- HOW IT WORKS SECTION -->
-        <section id="cara-kerja" class="how-it-works">
-
-            <div class="section-header">
-                <h2>Bagaimana Cara Kerjanya?</h2>
-                <p>Tiga langkah mudah untuk melaporkan fasilitas kampus yang bermasalah</p>
-            </div>
-
-            <div class="steps-container">
-
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3>Pilih Kategori</h3>
-                    <p>Pilih kategori fasilitas yang bermasalah dari daftar yang tersedia.</p>
-                    <div class="step-icon">📋</div>
-                </div>
-
-                <div class="step-arrow">→</div>
-
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3>Isi Detail</h3>
-                    <p>Berikan deskripsi detail tentang masalah dan lokasi fasilitas yang rusak.</p>
-                    <div class="step-icon">✍️</div>
-                </div>
-
-                <div class="step-arrow">→</div>
-
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3>Pantau Status</h3>
-                    <p>Pantau progress perbaikan fasilitas Anda secara real-time.</p>
-                    <div class="step-icon">📊</div>
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- ABOUT SECTION -->
-        <section id="tentang" class="about-section">
-
-            <div class="section-header">
-                <h2>Tentang CampusCare</h2>
-                <p>Visi kami adalah menciptakan kampus yang lebih nyaman untuk semua</p>
-            </div>
-
-            <div class="about-content">
-                <p>
-                    CampusCare adalah inisiatif dari Universitas Muhammadiyah Malang untuk meningkatkan kualitas hidup akademik melalui sistem pelaporan fasilitas yang transparan dan responsif. Kami percaya bahwa setiap mahasiswa berhak mendapatkan lingkungan belajar yang optimal.
-                </p>
-                <p>
-                    Platform ini dirancang dengan mempertimbangkan kebutuhan mahasiswa modern, dengan antarmuka yang intuitif dan fitur-fitur yang powerful untuk memastikan setiap laporan ditangani dengan serius dan cepat.
-                </p>
-
-            </div>
-
-        </section>
+       
 
         <!-- CTA SECTION -->
         <section class="cta-section">
